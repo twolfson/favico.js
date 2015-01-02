@@ -104,13 +104,14 @@
 				var favicon = new Favico({
 					animation : 'popFade',
 					setter : function (url) {
-						// http://www.softwareishard.com/blog/firebug/firebug-tip-styled-logging/
-						console.group('favicon');
-						var cssRule = [
-							'background-image: url(\'' + url + '\');',
-							'display: block;'
-						].join('');
-						console.groupEnd();
+						// http://jmperezperez.com/console-log-favicon/
+						var css = "background-image: url('" + url + "');" +
+					            "background-repeat: no-repeat;" +
+					            "display: block;" +
+					            "background-size: 13px 13px;" +
+					            "padding-left: 13px;" +
+					            "margin-left: 5px;";
+					  console.log('%c   favico.js', css);
 					}
 				});
 				$('#plusOne').bind('click', function() {
