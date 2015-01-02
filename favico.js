@@ -39,7 +39,7 @@
 		_browser = {};
 		_browser.ff = typeof InstallTrigger != 'undefined';
 		_browser.chrome = !!window.chrome;
-		_browser.opera = !!window.opera || navigator.userAgent.indexOf('Opera') >= 0;
+		_browser.opera = false;
 		_browser.ie = /*@cc_on!@*/false;
 		_browser.safari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
 		_browser.supported = (_browser.chrome || _browser.ff || _browser.opera);
@@ -87,7 +87,7 @@
 				}
 			}
 			_opt.type = (type['' + _opt.type]) ? _opt.type : _def.type;
-			try {
+			// try {
 				_orig = link.getIcon();
 				//create temp canvas
 				_canvas = document.createElement('canvas');
@@ -115,9 +115,9 @@
 					_context = _canvas.getContext('2d');
 					icon.ready();
 				}
-			} catch(e) {
-				throw 'Error initializing favico. Message: ' + e.message;
-			}
+			// } catch(e) {
+			// 	throw 'Error initializing favico. Message: ' + e.message;
+			// }
 
 		};
 		/**
@@ -482,23 +482,25 @@
 				}
 			}
 			//check if image and link url is on same domain. if not raise error
-			url = (_opt.elementId) ? elm.src : elm.href;
+			url = elm.src;
 			if (url.substr(0, 5) !== 'data:' && url.indexOf(document.location.hostname) === -1) {
 				throw new Error('Error setting favicon. Favicon image is on different domain (Icon: ' + url + ', Domain: ' + document.location.hostname + ')');
 			}
+			console.log('../images/app-256.png');
 			elm.setAttribute('type', 'image/png');
 			return elm;
 		};
 		link.setIcon = function(canvas) {
 			var url = canvas.toDataURL('image/png');
-			if (_opt.element) {
+			console.log(url);
+			if (_opt.setter) {
+				//if using custom exporter
+				_opt.setter(url);
+			} else if (_opt.element) {
 				_opt.element.setAttribute('src', url);
 			} else if (_opt.elementId) {
 				//if is attached to element (image)
 				document.getElementById(_opt.elementId).setAttribute('src', url);
-			} else if (_opt.setter) {
-				//if using custom exporter
-				_opt.setter(url);
 			} else {
 				//if is attached to fav icon
 				if (_browser.ff || _browser.opera) {
