@@ -87,6 +87,7 @@
 				}
 			}
 			_opt.type = (type['' + _opt.type]) ? _opt.type : _def.type;
+			try {
 				_orig = link.getIcon();
 				//create temp canvas
 				_canvas = document.createElement('canvas');
@@ -114,6 +115,9 @@
 					_context = _canvas.getContext('2d');
 					icon.ready();
 				}
+			} catch(e) {
+				throw 'Error initializing favico. Message: ' + e.message;
+			}
 
 		};
 		/**
@@ -462,15 +466,7 @@
 				}
 				return false;
 			};
-			if (_opt.getter) {
-				url = _opt.getter();
-				elm = {
-					hasAttribute: function () { return true; },
-					getAttribute: function () { return url; },
-					setAttribute: function () {},
-					href: url
-				};
-			} else if (_opt.element) {
+			if (_opt.element) {
 				elm = _opt.element;
 			} else if (_opt.elementId) {
 				//if img element identified by elementId
